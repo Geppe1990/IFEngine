@@ -1,2 +1,3 @@
 # IFEngine
-My engine to create Interactive Fiction
+Ennesimo Engine per creare Interactive Fiction in Javascript!
+
