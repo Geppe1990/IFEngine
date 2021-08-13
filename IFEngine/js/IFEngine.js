@@ -274,8 +274,7 @@ class IFEngine{
 
 		await this.printRoomLabel();
 		this.refreshOggettiInStanza();
-		await this.descriviStanzaCorrente();
-		await this.gameLoop();
+		await this.gameLoop(true);
 	}
 
 	async printRoomLabel(){
@@ -303,6 +302,26 @@ class IFEngine{
 	// Descrive la stanza corrente
 	async descriviStanzaCorrente(){
 		await this.CRT.printTyping(this.stanzaCorrente.descrizione);
+	}
+
+	// Elenca una lista "cose" visibili
+	async elenca(lista){
+		if (lista == null)
+			return;
+		if( Object.keys(lista).length > 0){
+			for(let i in lista){
+				if(lista[i].visibile){
+					let cosaVedo = lista[i].label+ (lista[i].stati ? " "+lista[i].stati[lista[i].stato] : "");
+					await this.CRT.printTyping("Vedo "+cosaVedo.trim()+".");
+				}
+			}
+		}
+	}
+	
+	// Elenca interattori e oggetti visibili
+	async elencaVisibili(){
+		await this.elenca(this.stanzaCorrente.interattori);
+		await this.elenca(this.stanzaCorrente.oggetti);
 	}
 	
 	// Avvia un evento a tempo
@@ -332,6 +351,7 @@ class IFEngine{
 		if(descriviStanzaCorrente){
 			await this.CRT.println("");
 			await this.descriviStanzaCorrente();
+			await this.elencaVisibili();
 		}
 
 		// Esistono eventi a tempo attivi?
@@ -575,8 +595,8 @@ class IFEngine{
 	}
 
 	async wtf(APO, wtf){
-		if(wtf.indexOf(" ") >=0)
-			wtf = wtf.substring(0,wtf.indexOf(" "));
+		/*if(wtf.indexOf(" ") >=0)
+			wtf = wtf.substring(0,wtf.indexOf(" ")); */
 		await this.CRT.printTyping("   "+wtf.toUpperCase()+" ???");
 		return;
 	}
@@ -929,7 +949,7 @@ class IFEngine{
 			pattern = obj.pattern;
 	
 		
-		let regExp = new RegExp("^(?:"+pattern+")$","i");
+		let regExp = new RegExp("^(?:"+pattern+")","i");
 		let res = needle.match(regExp);
 		return res;
 	}

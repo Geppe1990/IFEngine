@@ -15,19 +15,14 @@ class Parser{
 		// O è un comando imperativo
 		// O è un verbo
 		
-		let c = this._parse(input, this.commands, true);
+		let c = this._parse(input, this.commands, (this.override.commands === undefined ? {} : this.override.commands));
 		return c === false ? 
-			this._parse(input, this.verbs, false) : 
+			this._parse(input, this.verbs, (this.override.verbs === undefined ? {} : this.override.verbs)) : 
 			c;
 	}
 
-	_parse(input, sorgente, patternEsatto){
+	_parse(input, sorgente, override){
 		
-		let override = patternEsatto ? 
-			(this.override.commands === undefined ? {} : this.override.commands) :
-			(this.override.verbs === undefined ? {} : this.override.verbs);
-		
-
 		for (let chiave in sorgente){
 			let obj = { ...sorgente[chiave]};
 			
@@ -56,7 +51,7 @@ class Parser{
 					return input;
 			}
 
-			if(patternEsatto == false){
+			if(sorgente == this.verbs){
 				if(
 					(obj.movimento === undefined || obj.movimento == false) && 
 					(obj.complex === undefined || obj.complex == false)

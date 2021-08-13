@@ -19,6 +19,7 @@ class Avventura extends IFEngine{
 					interattori: {
 						interruttore: {
 							label: "un interruttore",
+							pattern: "(?:l\\s*'\\s*)?interruttore",
 							visibile: true,
 							on: {
 								"premi|spingi": async () => {
@@ -28,15 +29,14 @@ class Avventura extends IFEngine{
 									return this.die();
 								}
 							}
-						
 						},
 						porta: {
 							label: "una porta",
+							pattern: "(?:la\\s*)?porta",
 							descrizione: "E' bianca e macchiata di sangue.",
 							stati: ['chiusa', 'aperta'],
 							stato: 0,
 							visibile: true,
-							peso: -1,
 							on: {
 								"apri|spingi": async () => {
 									if(this.stanzaCorrente.interattori.porta.stato == 0){
