@@ -14,7 +14,7 @@ class Avventura extends IFEngine{
 				stanza1: {
 					descrizione: "Sei nella stanza 1",
 					direzioni: {
-						n: "stanza2"
+						//n: "stanza2"
 					},
 					interattori: {
 						interruttore: {
