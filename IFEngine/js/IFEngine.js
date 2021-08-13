@@ -27,9 +27,6 @@ class IFEngine{
 		// Dati specifici di ogni avventura da salvare
 		this.altriDati = {};
 
-		// Strong Check delle frasi
-		this.strongCheck = true;
-
 		// Elenco degli eventi "a tempo"
 		this.timedEvents = [];
 
