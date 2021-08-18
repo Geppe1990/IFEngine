@@ -595,12 +595,12 @@ class IFEngine{
 		/*if(wtf.indexOf(" ") >=0)
 			wtf = wtf.substring(0,wtf.indexOf(" ")); */
 		await this.CRT.printTyping("   "+wtf.toUpperCase()+" ???");
-		return;
+		return true;
 	}
 
 	async inputNotUnderstood(){
 		await this.CRT.printTyping(this.Thesaurus.defaultMessages.NON_HO_CAPITO);
-		return;
+		return true;
 	}
 
 	// Parsing del comando
@@ -674,14 +674,16 @@ class IFEngine{
 		}
 
 		// Ho scritto solo il verbo
-		if(APO.subjects.length == 0){
+		if(APO.subjects.length == 0 && (actionObject.singolo === true)){
+			/*
 			// Se è un verbo che necessita di un complemento
 			// Sii più preciso!
 			if(actionObject.singolo === undefined || actionObject.singolo == false){
 				await this.CRT.printTyping(this.Thesaurus.defaultMessages.SII_PIU_SPECIFICO);
 				return true;
 			} 
-
+			*/
+		
 			// Ok, si può usare da solo.
 			if(actionObject.callback){
 				let ret = this._callbackOrString(actionObject.callback);

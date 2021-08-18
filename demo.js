@@ -64,7 +64,7 @@ class Avventura extends IFEngine{
 	
 				chiave: {
 					label: "una chiave",
-					pattern: "chiave",
+					pattern: "(?:la\\s*)?chiave",
 					descrizione: "E' una chiave di ottone.",
 					posizione: "stanza1",
 				},
@@ -108,5 +108,13 @@ class Avventura extends IFEngine{
 	async run(){
 		await this.runSequence("titolo");
 		this.displayMenu(this.menu.principale);
+	}
+
+	// @Override _prepare
+	_prepare(input){
+		input = super._prepare(input);
+		input = input.replace(/\s+(un|uno|una|i|il|gli|le|lo|la|di|dei|degli|delle|del|della|dell|a|al|alla|all|agli|alle|in|nel|nello|nella|dentro|negli|dal|dall|dalla|dagli|dalle|con|col|sul|sullo|sulla|sugli|sulle|sopra|sotto|dietro|tra|fra)[\s']+/," ");
+		input = input.replace(/l'/," ");
+		return input;
 	}
 }

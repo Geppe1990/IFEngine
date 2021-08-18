@@ -62,6 +62,7 @@ class Thesaurus{
 	loadVerbs(){
 		this.verbs = {
 			apri: {
+				singolo: true,
 				defaultMessage: "Non si apre"
 			},
 			chiudi: {
