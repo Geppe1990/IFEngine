@@ -86,7 +86,7 @@ class Thesaurus{
 			},
 			dai: {
 				inventario: true,
-				pattern: "(dai)\\s+(.+)\\s+(?:a)\\s+(.+)",
+				pattern: "(dai)\\s+(.+)\\s+(?:a|al|allo|alla|alle|agli|ai)\\s+(.+)",
 				complex: true,
 				defaultMessage: this.defaultMessages.PREFERISCO_DI_NO
 			},

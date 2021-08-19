@@ -22,7 +22,6 @@ class Parser{
 	}
 
 	_parse(input, sorgente, override){
-		
 		for (let chiave in sorgente){
 			let obj = { ...sorgente[chiave]};
 			
@@ -64,6 +63,7 @@ class Parser{
 
 			pattern = new RegExp("^"+pattern+"$", 'i');
 			let matches = input.match(pattern);
+			console.log(input,pattern,matches);
 			
 			if(matches != null){
 
