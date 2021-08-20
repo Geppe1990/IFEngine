@@ -5,58 +5,33 @@ class Avventura extends IFEngine{
 		// DATI AVVENTURA
 		this.datiAvventura = {
 			// stanza iniziale
-			stanzaIniziale: "stanza1",
+			stanzaIniziale: "ufficio",
 			
 			/* STANZE */
 			stanze: {
 
 				// 01.AEREO
-				stanza1: {
-					descrizione: "Sei nella stanza 1",
+				ufficio: {
+					label: "Ufficio",
+					descrizione: "Sei nel tuo ufficio. Davanti a te si estende la scrivania, piena di appunti. Sotto di essa c'è una cassettiera di ferro. Sulla parete si staglia un moderno mobile a vetri. La luce entra dalle finestre a ovest, mentre a est si trova l'unico ingresso della stanza.",
 					direzioni: {
-						//n: "stanza2"
+						//e: "corridoio"
 					},
 					interattori: {
-						interruttore: {
-							label: "un interruttore",
-							pattern: "(?:l\\s*'\\s*)?interruttore",
-							visibile: true,
-							on: {
-								"premi|spingi": async () => {
-									await this.CRT.printTyping("BOOM!");
-									await this.CRT.sleep(1500);
-									await this.CRT.printTyping("La stanze è esplosa");
-									return this.die();
-								}
-							}
+						scrivania: {
+							label: "la scrivania",
+							descrizione: "E' una classica scrivania da ufficio in legno."
 						},
-						porta: {
-							label: "una porta",
-							pattern: "(?:la\\s*)?porta",
-							descrizione: "E' bianca e macchiata di sangue.",
-							stati: ['chiusa', 'aperta'],
-							stato: 0,
-							visibile: true,
-							on: {
-								"apri|spingi": async () => {
-									if(this.stanzaCorrente.interattori.porta.stato == 0){
-										this.stanzaCorrente.interattori.porta.stato = 1;
-										return this.Thesaurus.defaultMessages.FATTO;
-									} 
-									return "E' già aperta.";
-								},
-								chiudi: async () => {
-									if(this.stanzaCorrente.interattori.porta.stato == 1){
-										this.stanzaCorrente.interattori.porta.stato = 0;
-										return this.Thesaurus.defaultMessages.FATTO;
-									}
-									return "E' già chiusa.";
-								}
-							}
-					
-						}
-					}
+						
+					},
+					onEnter: async () => {
+						if(this.datiAvventura.prologo){
+							this.datiAvventura.prologo = false;
+							await this.runSequence("prologo");
+						} 
+					},
 				},
+
 			},
 
 			/* OGGETTI */
@@ -68,6 +43,13 @@ class Avventura extends IFEngine{
 					descrizione: "E' una chiave di ottone.",
 					posizione: "stanza1",
 				},
+				occhiali: {
+					label: "un paio di occhiali",
+					pattern: "(?:gli\\s*)?occhiali",
+					descrizione: "Sono occhiali per astigmatici e ipermetropi.",
+					posizione: "stanza1",
+					visibile:true
+				}
 			},
 
 			/* SEQUENZE */
@@ -99,6 +81,19 @@ class Avventura extends IFEngine{
 					await this.CRT.wait();
 					this.CRT.clear();
 
+				},
+				prologo: async () => {
+					await this.CRT.sleep(1000);
+					await this.CRT.printTyping("Accidenti....",{cr:false})
+					await this.CRT.sleep(1500);
+					await this.CRT.printTyping("Come ho fatto ad addormentarmi in ufficio?")
+					await this.CRT.sleep(1000);
+					await this.CRT.printTyping("Quanto tempo è passato?")
+					await this.CRT.sleep(1500);
+					await this.CRT.printTyping("Uhm... ",{cr:false})
+					await this.CRT.sleep(2000);
+					await this.CRT.printTyping("E' tutto troppo silenzioso qui. Sarà meglio tornare a casa.",{nlAfter:2})
+					await this.CRT.sleep(1500);
 				}
 			}
 		}

@@ -108,8 +108,9 @@ class CRT{
 				await this.sleep(options.printDelay);
 		}
 
-
-		this.fixed.appendChild(this.txt.cloneNode(true));
+		let cn = this.txt.cloneNode(true);
+		cn.removeAttribute('id');
+		this.fixed.appendChild(cn);
 		
 		if(options.nlAfter > 0)
 			this.fixed.innerHTML += "\n".repeat(options.nlAfter);
@@ -153,7 +154,9 @@ class CRT{
 		if(options.nlBefore > 0)
 			this.fixed.innerHTML += "\n".repeat(options.nlBefore);
 
-		this.fixed.appendChild(this.txt.cloneNode(true));
+		let cn = this.txt.cloneNode(true);
+		cn.removeAttribute('id');
+		this.fixed.appendChild(cn);
 		
 		if(options.nlAfter > 0)
 			this.fixed.innerHTML += "\n".repeat(options.nlAfter);

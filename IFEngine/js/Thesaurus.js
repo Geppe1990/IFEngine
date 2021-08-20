@@ -62,7 +62,11 @@ class Thesaurus{
 	loadVerbs(){
 		this.verbs = {
 			apri: {
-				singolo: true,
+				defaultMessage: "Non si apre"
+			},
+			apriCon: {
+				pattern: "apri \\s+(.+)\\s+(?:con)\\s+(.+)",
+				complex: true,
 				defaultMessage: "Non si apre"
 			},
 			chiudi: {
@@ -78,9 +82,21 @@ class Thesaurus{
 				defaultMessage: "Non si muove."
 			},
 			prendi: {
+				pattern: "(prendi|raccogli)",
 				defaultMessage: this.defaultMessages.PREFERISCO_DI_NO
 			},		
 			lascia: {
+				pattern: "(lascia|posa|abbandona|metti\\s+(?:giù|giu))",
+				inventario: true,
+				defaultMessage: this.defaultMessages.PREFERISCO_DI_NO
+			},
+			indossa: {
+				pattern: "(indossa|metti|infila)(?:ti)?",
+				inventario: true,
+				defaultMessage: this.defaultMessages.PREFERISCO_DI_NO
+			},
+			togli: {
+				pattern: "(togli|leva|sfila)(?:ti)?",
 				inventario: true,
 				defaultMessage: this.defaultMessages.PREFERISCO_DI_NO
 			},
@@ -90,17 +106,17 @@ class Thesaurus{
 				complex: true,
 				defaultMessage: this.defaultMessages.PREFERISCO_DI_NO
 			},
+			inserisci: {
+				pattern: "(metti|infila|inserisci)\\s+(.+)\\s+(?:dentro|in|nel|nello|nell\\s+'|nella|negli|nelle|nei)\\s+(.+)",
+				complex: true,
+				defaultMessage: this.defaultMessages.PREFERISCO_DI_NO
+			},
 			guarda: {
 				pattern: "(guarda|esamina)",
 				defaultMessage: this.defaultMessages.NULLA_DI_PARTICOLARE
 			},
-			usaCon: {
-				pattern: "(usa\\s+)(.+)(?:\\s+con\\s+)(.+)",
-				complex: true,
-				defaultMessage: "Non posso usarli insieme.",
-			},
-			usa:{
-				defaultMessage: this.defaultMessages.SII_PIU_SPECIFICO
+			leggi: {
+				defaultMessage: this.defaultMessages.NULLA_DI_PARTICOLARE
 			},
 			cerca:{
 				pattern: "(cerca|trova)",

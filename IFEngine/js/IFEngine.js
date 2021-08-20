@@ -137,6 +137,21 @@ class IFEngine{
 						}
 						return true;
 					}
+				},
+
+				// dove 
+				dove: {
+					callback: async () => {
+						await this.descriviStanzaCorrente();
+						return true;
+					},
+				},
+
+				punti: {
+					callback: async () => {
+						await this._punti();
+						return true;
+					},	
 				}
 			}
 		}
@@ -398,7 +413,7 @@ class IFEngine{
 		let repeat = await this._parse(input);
 
 		if(repeat === undefined || repeat == true){
-			this.gameLoop(repeat);
+			this.gameLoop();
 		}
 	}
 
@@ -571,7 +586,7 @@ class IFEngine{
 	
 	// Stampa i punti del gioco
 	async _punti(){
-		if (this.datiPunti.puntiAzione === undefined)
+		if (this.datiPunti === undefined)
 			await this.CRT.printTyping("Quest'avventura non prevede un punteggio");
 		else
 			await this.CRT.printTyping("Hai conquistato "+this.altriDati.punti+" punti su "+this.datiPunti.puntiMax+".\n");
