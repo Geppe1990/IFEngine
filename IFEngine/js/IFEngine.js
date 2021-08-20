@@ -406,6 +406,7 @@ class IFEngine{
 		// Attendo il comando
 		await this.CRT.print(this.defaultInput);
 		let input = await this.CRT.input();
+		console.log(input);
 		// Rimuovo gli n>1 spazi dal comando inviato
 		input = this._prepare(input);
 		// Faccio il parsing del comando. 
@@ -622,7 +623,7 @@ class IFEngine{
 	async _parse(input){
 		// Approfondiamo
 		let APO = this.Parser.parse(input);
-		//console.log(APO);
+		console.log(APO);
 		
 		if(APO === false){
 			return this.inputNotUnderstood(input);
