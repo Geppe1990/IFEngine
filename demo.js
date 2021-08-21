@@ -22,12 +22,18 @@ class Avventura extends IFEngine{
 							label: "la scrivania",
 							descrizione: "E' una classica scrivania da ufficio in legno."
 						},
+						soggetto: {
+							label: "il soggetto",
+							descrizione: "Che tipo",
+							vivo: true,
+							initial: () => "Un soggetto di tipo "+(this.stanzaCorrente.interattori.soggetto.vivo ? "A" : "B")
+						}
 						
 					},
 					onEnter: async () => {
 						if(this.datiAvventura.prologo){
 							this.datiAvventura.prologo = false;
-							await this.runSequence("prologo");
+							//await this.runSequence("prologo");
 						} 
 					},
 				},
@@ -41,13 +47,14 @@ class Avventura extends IFEngine{
 					label: "una chiave",
 					pattern: "(?:la\\s*)?chiave",
 					descrizione: "E' una chiave di ottone.",
-					posizione: "stanza1",
+					posizione: "ufficio",
+					initial: "C'è una chiave di ottone appoggiata sul tavolo"
 				},
 				occhiali: {
 					label: "un paio di occhiali",
 					pattern: "(?:gli\\s*)?occhiali",
 					descrizione: "Sono occhiali per astigmatici e ipermetropi.",
-					posizione: "stanza1",
+					posizione: "ufficio",
 					visibile:true
 				}
 			},

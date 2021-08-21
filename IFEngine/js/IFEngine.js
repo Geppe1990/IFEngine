@@ -313,7 +313,27 @@ class IFEngine{
 
 	// Descrive la stanza corrente
 	async descriviStanzaCorrente(){
-		await this.CRT.printTyping(this.stanzaCorrente.descrizione);
+		let descrizione = this.stanzaCorrente.descrizione;
+		descrizione += this.arricchisciDescrizione(this.stanzaCorrente.interattori);
+		descrizione += this.arricchisciDescrizione(this.stanzaCorrente.oggetti);
+		
+		await this.CRT.printTyping(descrizione);
+		await this.elenca(this.stanzaCorrente.interattori);
+		await this.elenca(this.stanzaCorrente.oggetti);
+	}
+
+	arricchisciDescrizione(lista){
+		if(lista == null || Object.keys(lista).length == 0) return null;
+		let more = [];
+		for(let i in lista){
+			if(lista[i].visibile == undefined && lista[i].initial){
+				console.log(typeof lista[i].initial)
+				let initial = typeof lista[i].initial == "string" ? lista[i].initial : (lista[i].initial)();
+				more.push(initial);
+			} 
+
+		}
+		return more.length == 0 ? "" : "\n"+more.join("\n\n");
 	}
 
 	// Elenca una lista "cose" visibili
@@ -325,15 +345,10 @@ class IFEngine{
 				if(lista[i].visibile){
 					let cosaVedo = lista[i].label+ (lista[i].stati ? " "+lista[i].stati[lista[i].stato] : "");
 					await this.CRT.printTyping("Vedo "+cosaVedo.trim()+".");
-				}
+					continue;
+				} 
 			}
 		}
-	}
-	
-	// Elenca interattori e oggetti visibili
-	async elencaVisibili(){
-		await this.elenca(this.stanzaCorrente.interattori);
-		await this.elenca(this.stanzaCorrente.oggetti);
 	}
 	
 	// Avvia un evento a tempo
@@ -363,7 +378,6 @@ class IFEngine{
 		if(descriviStanzaCorrente){
 			await this.CRT.println("");
 			await this.descriviStanzaCorrente();
-			await this.elencaVisibili();
 		}
 
 		// Esistono eventi a tempo attivi?
@@ -406,7 +420,7 @@ class IFEngine{
 		// Attendo il comando
 		await this.CRT.print(this.defaultInput);
 		let input = await this.CRT.input();
-		console.log(input);
+		//console.log(input);
 		// Rimuovo gli n>1 spazi dal comando inviato
 		input = this._prepare(input);
 		// Faccio il parsing del comando. 
@@ -623,7 +637,7 @@ class IFEngine{
 	async _parse(input){
 		// Approfondiamo
 		let APO = this.Parser.parse(input);
-		console.log(APO);
+		//console.log(APO);
 		
 		if(APO === false){
 			return this.inputNotUnderstood(input);
