@@ -380,7 +380,6 @@ class IFEngine{
 	async gameLoop(descriviStanzaCorrente, ignoraTimedEvents){
 		
 		if(descriviStanzaCorrente){
-			await this.CRT.println("");
 			await this.descriviStanzaCorrente();
 		}
 
@@ -884,18 +883,18 @@ class IFEngine{
 	async _inventario(action){
 		let output;
 		if(Object.keys(this.inventario).length == 0){
-			output = "Non hai con te nessun oggetto."
-		} else {
-			output = "* Attualmente possiedi: *\n"
-			for(let i in this.inventario){
-				let label = this.inventario[i].label;
-				if(this.inventario[i].stati !== undefined){
-					label += " "+this.inventario[i].stati[this.inventario[i].stato];
-				}
-				output += "\n- "+label.trim()+".";
-			}
+			await this.CRT.printTyping("Non hai con te nessun oggetto.");
+			return;
 		}
-		await this.CRT.printTyping(output);
+		await this.CRT.println("<strong style='text-decoration:underline'>Stai portando con te:</strong>",{cr:false});
+		for(let i in this.inventario){
+			let label = this.inventario[i].label;
+			if(this.inventario[i].stati !== undefined){
+				label += " "+this.inventario[i].stati[this.inventario[i].stato];
+			}
+			await this.CRT.printTyping("-- "+label.trim()+".");
+		}
+		
 	}
 
 	// Aggiungi oggetto nell'inventario
