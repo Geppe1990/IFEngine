@@ -13,7 +13,6 @@ class Avventura extends IFEngine{
 				// 01.AEREO
 				ufficio: {
 					label: "Ufficio",
-					dark: true,
 					descrizione: "Sei nel tuo ufficio. Davanti a te si estende la scrivania, piena di appunti. Sotto di essa c'è una cassettiera di ferro. Sulla parete si staglia un moderno mobile a vetri. La luce entra dalle finestre a ovest, mentre a est si trova l'unico ingresso della stanza.",
 					direzioni: {
 						//e: "corridoio"
@@ -57,7 +56,10 @@ class Avventura extends IFEngine{
 					pattern: "(?:paio (?:di )?)?occhiali",
 					descrizione: "Sono occhiali per astigmatici e ipermetropi.",
 					posizione: "ufficio",
-					visibile:true
+					visibile:true,
+					on: {
+						'lascia': "Meglio di no, potrebbero servirti in furturo."
+					}
 				}
 			},
 
