@@ -10,7 +10,9 @@ class Thesaurus{
 			NON_NE_POSSIEDI: 		"Non ne possiedi.", 
 			NON_SUCCEDE_NIENTE: 	"Non succede niente.",
 			SII_PIU_SPECIFICO: 		"Sii più specifico.",
-			NON_E_POSSIBILE: 		"Non è possibile"
+			NON_E_POSSIBILE: 		"Non è possibile",
+			BUIO: 					"Qui è completamente buio..",
+			AZIONE_AL_BUIO: 		"Con l'oscurità non voglio azzardarmi a fare nulla..."
 		}
 
 		this.loadCommands();

@@ -13,9 +13,11 @@ class Avventura extends IFEngine{
 				// 01.AEREO
 				ufficio: {
 					label: "Ufficio",
+					dark: true,
 					descrizione: "Sei nel tuo ufficio. Davanti a te si estende la scrivania, piena di appunti. Sotto di essa c'è una cassettiera di ferro. Sulla parete si staglia un moderno mobile a vetri. La luce entra dalle finestre a ovest, mentre a est si trova l'unico ingresso della stanza.",
 					direzioni: {
 						//e: "corridoio"
+						defaultMessage: "Quella direzione è preclusa"
 					},
 					interattori: {
 						scrivania: {
@@ -26,7 +28,7 @@ class Avventura extends IFEngine{
 							label: "il soggetto",
 							descrizione: "Che tipo",
 							vivo: true,
-							initial: () => "Un soggetto di tipo "+(this.stanzaCorrente.interattori.soggetto.vivo ? "A" : "B")
+							descrizioneIniziale: () => "Un soggetto di tipo "+(this.stanzaCorrente.interattori.soggetto.vivo ? "A" : "B")
 						}
 						
 					},
@@ -52,7 +54,7 @@ class Avventura extends IFEngine{
 				},
 				occhiali: {
 					label: "un paio di occhiali",
-					pattern: "(?:gli\\s*)?occhiali",
+					pattern: "(?:paio (?:di )?)?occhiali",
 					descrizione: "Sono occhiali per astigmatici e ipermetropi.",
 					posizione: "ufficio",
 					visibile:true

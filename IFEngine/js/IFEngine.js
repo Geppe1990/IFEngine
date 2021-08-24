@@ -290,7 +290,7 @@ class IFEngine{
 	}
 
 	async printRoomLabel(){
-		if(this.stanzaCorrente.label !== undefined){
+		if(this.stanzaCorrente.label !== undefined && !this.stanzaCorrente.dark){
 			await this.CRT.println("<strong style='text-decoration:underline'>"+this.stanzaCorrente.label+"</strong>");
 		}
 	}
@@ -313,6 +313,10 @@ class IFEngine{
 
 	// Descrive la stanza corrente
 	async descriviStanzaCorrente(){
+		if(this.stanzaCorrente.dark){
+			await this.CRT.printTyping(this.stanzaCorrente.descrizioneDark ? this.stanzaCorrente.descrizioneDark : this.Thesaurus.defaultMessages.BUIO);
+			return;
+		}
 		let descrizione = this.stanzaCorrente.descrizione;
 		descrizione += this.arricchisciDescrizione(this.stanzaCorrente.interattori);
 		descrizione += this.arricchisciDescrizione(this.stanzaCorrente.oggetti);
@@ -323,13 +327,13 @@ class IFEngine{
 	}
 
 	arricchisciDescrizione(lista){
-		if(lista == null || Object.keys(lista).length == 0) return null;
+		if(lista == null || Object.keys(lista).length == 0) return "";
 		let more = [];
 		for(let i in lista){
-			if(lista[i].visibile == undefined && lista[i].initial){
-				console.log(typeof lista[i].initial)
-				let initial = typeof lista[i].initial == "string" ? lista[i].initial : (lista[i].initial)();
-				more.push(initial);
+			if(lista[i].visibile == undefined && lista[i].descrizioneIniziale){
+				console.log(typeof lista[i].descrizioneIniziale)	
+				let descrizioneIniziale = typeof lista[i].descrizioneIniziale == "string" ? lista[i].descrizioneIniziale : (lista[i].descrizioneIniziale)();
+				more.push(descrizioneIniziale);
 			} 
 
 		}
@@ -703,6 +707,13 @@ class IFEngine{
 			return await this.wtf(APO, wtf);
 		}
 
+		
+		if(this.stanzaCorrente.dark){
+			await this.CRT.printTyping(this.Thesaurus.defaultMessages.AZIONE_AL_BUIO);
+			return
+		}
+
+
 		// Ho scritto solo il verbo
 		if(APO.subjects.length == 0 && (actionObject.singolo === true)){
 			/*
@@ -865,7 +876,7 @@ class IFEngine{
 		}
 
 		// No way, non si può andare di là
-		await this.CRT.printTyping(defaultMessage);
+		await this.CRT.printTyping(direzioni.defaultMessage ? direzioni.defaultMessage : defaultMessage);
 		return;
 	}
 
