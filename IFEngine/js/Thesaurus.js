@@ -67,7 +67,7 @@ class Thesaurus{
 				defaultMessage: "Non si apre"
 			},
 			apriCon: {
-				pattern: "apri \\s+(.+)\\s+(?:con)\\s+(.+)",
+				pattern: "apri\\s+(.+)\\s+(?:con)\\s+(.+)",
 				complex: true,
 				defaultMessage: "Non si apre"
 			},
@@ -109,7 +109,7 @@ class Thesaurus{
 				defaultMessage: this.defaultMessages.PREFERISCO_DI_NO
 			},
 			inserisci: {
-				pattern: "(metti|infila|inserisci)\\s+(.+)\\s+(?:dentro|in|nel|nello|nell\\s+'|nella|negli|nelle|nei)\\s+(.+)",
+				pattern: "(metti|infila|inserisci)\\s+(.+)\\s+(?:dentro|in|nel|nello|nella|negli|nelle|nei)\\s+(.+)",
 				complex: true,
 				defaultMessage: this.defaultMessages.PREFERISCO_DI_NO
 			},

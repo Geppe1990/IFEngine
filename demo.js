@@ -2,6 +2,8 @@ class Avventura extends IFEngine{
 	constructor(){
 		super();
 		
+		this.CRT.defaultCR = false;
+
 		// DATI AVVENTURA
 		this.datiAvventura = {
 			// stanza iniziale
@@ -46,7 +48,7 @@ class Avventura extends IFEngine{
 	
 				chiave: {
 					label: "una chiave",
-					pattern: "(?:la\\s*)?chiave",
+					pattern: "(?:la )?chiave",
 					descrizione: "E' una chiave di ottone.",
 					posizione: "ufficio",
 					initial: "C'è una chiave di ottone appoggiata sul tavolo"

@@ -331,7 +331,7 @@ class IFEngine{
 		let more = [];
 		for(let i in lista){
 			if(lista[i].visibile == undefined && lista[i].descrizioneIniziale){
-				console.log(typeof lista[i].descrizioneIniziale)	
+				//console.log(typeof lista[i].descrizioneIniziale)	
 				let descrizioneIniziale = typeof lista[i].descrizioneIniziale == "string" ? lista[i].descrizioneIniziale : (lista[i].descrizioneIniziale)();
 				more.push(descrizioneIniziale);
 			} 
