@@ -423,9 +423,7 @@ class IFEngine{
 		// Attendo il comando
 		await this.CRT.print(this.defaultInput);
 		let input = await this.CRT.input();
-		//console.log(input);
-		// Rimuovo gli n>1 spazi dal comando inviato
-		input = this._prepare(input);
+		console.log(input);
 		// Faccio il parsing del comando. 
 		// Se la funzione mi restituisce undefined o true allora ciclo nuovament il loop
 		let repeat = await this._parse(input);
@@ -435,13 +433,6 @@ class IFEngine{
 		}
 	}
 
-	_prepare(input){
-		input = input.trim();
-		input = input.replace(/[\.,:;!"£\$%&\/\(\)=à°èé\+\*]*/,"");
-		input = input.replace(/\s+/gmi," ");
-		return input;		
-	}
-	
 	// Salva il gioco
 	async save() {
 		if(this._checkStorage() == false ){

@@ -118,11 +118,4 @@ class Avventura extends IFEngine{
 		this.displayMenu(this.menu.principale);
 	}
 
-	// @Override _prepare
-	_prepare(input){
-		input = super._prepare(input);
-		input = input.replace(/\s+(un|un|uno|una|i|il|gli|le|lo|la|l)/," ");
-		input = input.replace(/'/,"");
-		return input;
-	}
 }

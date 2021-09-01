@@ -12,6 +12,9 @@ class Parser{
 	}
 
 	parse(input){
+		input = this._prepare(input);
+		//console.log(input);
+
 		// O è un comando imperativo
 		// O è un verbo
 		
@@ -63,7 +66,7 @@ class Parser{
 
 			pattern = new RegExp("^"+pattern+"$", 'i');
 			let matches = input.match(pattern);
-			console.log(input,pattern,matches);
+			//console.log(input,pattern,matches);
 			
 			if(matches != null){
 
@@ -103,6 +106,23 @@ class Parser{
 		}
 
 		return false;
+	}
+
+	_prepare(input){
+		input = input.trim();
+		input = input.replace(/[\.,:;!"£\$%&\/\(\)=°\+\*]*/gmi,"");
+		input = input.replace(/à/gmi,"a");
+		input = input.replace(/(è|é)/gmi,"e");
+		input = input.replace(/ì/gmi,"i");
+		input = input.replace(/ò/gmi,"o");
+		input = input.replace(/ù/gmi,"u");
+		input = input.replace(/'/gmi," ");
+		input = input.replace(/\s+(un|un|uno|una|i|il|gli|le|lo|la|l)\s+/gmi," ");
+		input = input.replace(/\s+(nel|nell|nello|nella|nelle|negli|nei|dentro)\s+/gmi," in ");
+		input = input.replace(/\s+(sul|sull|sullo|sulla|sulle|sugli|sui)\s+/gmi," su ");
+		input = input.replace(/\s+(al|all|allo|agli|alle|ai)\s+/gmi," a ");
+		input = input.replace(/\s+/gmi," ");
+		return input;		
 	}
 
 	_getSource(key, source,separator){

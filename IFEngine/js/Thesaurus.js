@@ -24,37 +24,37 @@ class Thesaurus{
 		this.commands = {
 			nord: {
 				movimento: true,
-				pattern: "(vai\\s+verso\\s+|vai\\s+a\\s+|vai\\s+)?(n(ord)?)",
+				pattern: "(vai verso |vai a |vai )?(n(ord)?)",
 				defaultMessage: "A nord non puoi andare.",
 				direzione: "n"
 			},
 			sud: {
 				movimento: true,
-				pattern: "(vai\\s+verso\\s+|vai\\s+a\\s+|vai\\s+)?(s(ud|outh)?)",
+				pattern: "(vai verso |vai a |vai )?(s(ud|outh)?)",
 				defaultMessage: "A sud non puoi andare.",
 				direzione: "s"
 			},
 			est: {
 				movimento: true,
-				pattern: "(vai\\s+verso\\s+|vai\\s+a\\s+|vai\\s+)?(e(st)?)",
+				pattern: "(vai verso |vai a |vai )?(e(st)?)",
 				defaultMessage: "A est non puoi andare.",
 				direzione: "e"
 			},
 			ovest: {
 				movimento: true,
-				pattern: "(vai\\s+verso\\s+|vai\\s+a\\s+|vai\\s+)?(o(vest)?|w(est)?)",
+				pattern: "(vai verso |vai a |vai )?(o(vest)?|w(est)?)",
 				defaultMessage: "Ad ovest non puoi andare.",
 				direzione: "o"
 			},
 			alto: {
 				movimento: true,
-				pattern: "(sali|(vai\\s+in\\s+|vai\\s+)?a(lto)?|u(p)?|su)",
+				pattern: "(sali|(vai in |vai )?a(lto)?|u(p)?|su)",
 				defaultMessage: "In alto non puoi andare.",
 				direzione: "a"
 			},
 			basso: {
 				movimento: true,
-				pattern: "(scendi|(vai\\s+in\\s+|vai\\s+)?b(asso)?|d(own)?|giu)",
+				pattern: "(scendi|(vai in |vai )?b(asso)?|d(own)?|giu)",
 				defaultMessage: "In basso non puoi andare.",
 				direzione: "b"
 			}
@@ -67,7 +67,7 @@ class Thesaurus{
 				defaultMessage: "Non si apre"
 			},
 			apriCon: {
-				pattern: "apri\\s+(.+)\\s+(?:con)\\s+(.+)",
+				pattern: "apri (.+) (?:con|col|coi) (.+)",
 				complex: true,
 				defaultMessage: "Non si apre"
 			},
@@ -81,6 +81,7 @@ class Thesaurus{
 				defaultMessage: this.defaultMessages.PREFERISCO_DI_NO
 			},
 			spingi: {
+				pattern: "(spingi|sposta)",
 				defaultMessage: "Non si muove."
 			},
 			prendi: {
@@ -88,28 +89,26 @@ class Thesaurus{
 				defaultMessage: this.defaultMessages.PREFERISCO_DI_NO
 			},		
 			lascia: {
-				pattern: "(lascia|posa|abbandona|metti\\s+(?:giù|giu))",
+				pattern: "(lascia|posa|abbandona|metti (?:giu))",
 				inventario: true,
+				defaultMessage: this.defaultMessages.PREFERISCO_DI_NO
+			},
+			metti: {
+				pattern: "(metti|infila|inserisci) (.+) (?:in|su) (.+)",
+				complex: true,
 				defaultMessage: this.defaultMessages.PREFERISCO_DI_NO
 			},
 			indossa: {
 				pattern: "(indossa|metti|infila)(?:ti)?",
-				inventario: true,
 				defaultMessage: this.defaultMessages.PREFERISCO_DI_NO
 			},
 			togli: {
 				pattern: "(togli|leva|sfila)(?:ti)?",
-				inventario: true,
 				defaultMessage: this.defaultMessages.PREFERISCO_DI_NO
 			},
 			dai: {
+				pattern: "(dai) (.+) a (.+)",
 				inventario: true,
-				pattern: "(dai)\\s+(.+)\\s+(?:a|al|allo|alla|alle|agli|ai)\\s+(.+)",
-				complex: true,
-				defaultMessage: this.defaultMessages.PREFERISCO_DI_NO
-			},
-			inserisci: {
-				pattern: "(metti|infila|inserisci)\\s+(.+)\\s+(?:dentro|in|nel|nello|nella|negli|nelle|nei)\\s+(.+)",
 				complex: true,
 				defaultMessage: this.defaultMessages.PREFERISCO_DI_NO
 			},
