@@ -117,7 +117,7 @@ class Parser{
 		input = input.replace(/ò/gmi,"o");
 		input = input.replace(/ù/gmi,"u");
 		input = input.replace(/'/gmi," ");
-		input = input.replace(/\s+(un|un|uno|una|i|il|gli|le|lo|la|l)\s+/gmi," ");
+		input = input.replace(/\s+(un|uno|una|i|il|gli|le|lo|la|l)\s+/gmi," ");
 		input = input.replace(/\s+(nel|nell|nello|nella|nelle|negli|nei|dentro)\s+/gmi," in ");
 		input = input.replace(/\s+(sul|sull|sullo|sulla|sulle|sugli|sui)\s+/gmi," su ");
 		input = input.replace(/\s+(al|all|allo|agli|alle|ai)\s+/gmi," a ");

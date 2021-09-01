@@ -618,7 +618,7 @@ class IFEngine{
 	async wtf(APO, wtf){
 		/*if(wtf.indexOf(" ") >=0)
 			wtf = wtf.substring(0,wtf.indexOf(" ")); */
-		await this.CRT.printTyping("   "+wtf.toUpperCase()+" ???");
+		await this.CRT.printTyping("Non vedi nulla del genere.");
 		return true;
 	}
 

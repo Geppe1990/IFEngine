@@ -48,7 +48,6 @@ class Avventura extends IFEngine{
 	
 				chiave: {
 					label: "una chiave",
-					pattern: "(?:la )?chiave",
 					descrizione: "E' una chiave di ottone.",
 					posizione: "ufficio",
 					initial: "C'è una chiave di ottone appoggiata sul tavolo"
@@ -114,8 +113,9 @@ class Avventura extends IFEngine{
 	
 	// Override di IFEngine.run
 	async run(){
-		await this.runSequence("titolo");
-		this.displayMenu(this.menu.principale);
+		this.restart();
+		//await this.runSequence("titolo");
+		//this.displayMenu(this.menu.principale);
 	}
 
 }
