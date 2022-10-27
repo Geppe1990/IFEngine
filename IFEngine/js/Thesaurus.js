@@ -25,37 +25,37 @@ class Thesaurus{
 			nord: {
 				movimento: true,
 				pattern: "(vai verso |vai a |vai )?(n(ord)?)",
-				defaultMessage: "A nord non puoi andare.",
+				defaultMessage: "Non puoi andare a nord.",
 				direzione: "n"
 			},
 			sud: {
 				movimento: true,
 				pattern: "(vai verso |vai a |vai )?(s(ud|outh)?)",
-				defaultMessage: "A sud non puoi andare.",
+				defaultMessage: "Non puoi andare a sud.",
 				direzione: "s"
 			},
 			est: {
 				movimento: true,
 				pattern: "(vai verso |vai a |vai )?(e(st)?)",
-				defaultMessage: "A est non puoi andare.",
+				defaultMessage: "Non puoi andare a est.",
 				direzione: "e"
 			},
 			ovest: {
 				movimento: true,
 				pattern: "(vai verso |vai a |vai )?(o(vest)?|w(est)?)",
-				defaultMessage: "Ad ovest non puoi andare.",
+				defaultMessage: "Non puoi andare ad ovest.",
 				direzione: "o"
 			},
 			alto: {
 				movimento: true,
 				pattern: "(sali|(vai in |vai )?a(lto)?|u(p)?|su)",
-				defaultMessage: "In alto non puoi andare.",
+				defaultMessage: "Non puoi andare su.",
 				direzione: "a"
 			},
 			basso: {
 				movimento: true,
 				pattern: "(scendi|(vai in |vai )?b(asso)?|d(own)?|giu)",
-				defaultMessage: "In basso non puoi andare.",
+				defaultMessage: "Non puoi andare giù.",
 				direzione: "b"
 			}
 		}

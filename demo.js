@@ -4,6 +4,8 @@ class Avventura extends IFEngine{
 		
 		this.CRT.defaultCR = false;
 
+		this.defaultInput = "\n] "
+
 		// DATI AVVENTURA
 		this.datiAvventura = {
 			// stanza iniziale
@@ -18,7 +20,7 @@ class Avventura extends IFEngine{
 					descrizione: "Sei nel tuo ufficio. Davanti a te si estende la scrivania, piena di appunti. Sotto di essa c'è una cassettiera di ferro. Sulla parete si staglia un moderno mobile a vetri. La luce entra dalle finestre a ovest, mentre a est si trova l'unico ingresso della stanza.",
 					direzioni: {
 						//e: "corridoio"
-						defaultMessage: "Quella direzione è preclusa"
+						//defaultMessage: "Quella direzione è preclusa"
 					},
 					interattori: {
 						scrivania: {
@@ -28,15 +30,15 @@ class Avventura extends IFEngine{
 						soggetto: {
 							label: "il soggetto",
 							descrizione: "Che tipo",
-							vivo: true,
-							descrizioneIniziale: () => "Un soggetto di tipo "+(this.stanzaCorrente.interattori.soggetto.vivo ? "A" : "B")
+							live: true,
+							descrizioneIniziale: () => "Un soggetto di tipo "+(this.stanzaCorrente.interattori.soggetto.live ? "A" : "B")
 						}
 						
 					},
 					onEnter: async () => {
 						if(this.datiAvventura.prologo){
 							this.datiAvventura.prologo = false;
-							//await this.runSequence("prologo");
+							await this.runSequence("prologo");
 						} 
 					},
 				},
@@ -113,9 +115,8 @@ class Avventura extends IFEngine{
 	
 	// Override di IFEngine.run
 	async run(){
-		this.restart();
-		//await this.runSequence("titolo");
-		//this.displayMenu(this.menu.principale);
+		await this.runSequence("titolo");
+		this.displayMenu(this.menu.principale);
 	}
 
 }
