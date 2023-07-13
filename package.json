@@ -1,0 +1,19 @@
+{
+  "name": "ifengine",
+  "version": "1.0.0",
+  "description": "Ennesimo Engine per creare Interactive Fiction in Javascript!",
+  "main": "demo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fedez1879/IFEngine.git"
+  },
+  "author": "Fedez1879",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Geppe1990/IFEngine/issues"
+  },
+  "homepage": "https://github.com/Geppe1990/IFEngine#readme"
+}
