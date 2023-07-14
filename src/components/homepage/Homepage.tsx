@@ -16,7 +16,7 @@ const ProjectContent = () => (
             differenze rispetto al gioco originale sono state comunque discusse e approvate dagli autori
             stessi.</p>
         <p>La licenza di distribuzione del porting è <a
-            href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.it" target="_blank" rel="noopener">CC BY-NC-ND
+            href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.it" target="_blank" rel="noreferrer">CC BY-NC-ND
             4.0</a> (Attribution-NonCommercial-NoDerivatives 4.0 International)</p>
         <hr />
         <h3>Note</h3>
@@ -29,8 +29,6 @@ const ProjectContent = () => (
                 browser stesso, i salvataggi andranno persi.
             </li>
         </ol>
-
-        <div className="close">Close</div>
     </article>
 );
 
@@ -42,7 +40,6 @@ const AuthorContent = () => (
         <p>A gennaio del 2021 mi sono messo a scrivere il porting. Quando sono giunto ad una "demo" giocabile ho pensato di scrivere allo stesso Colombini per informarlo delle mie intenzioni e per avere un suo parere.</p><p>Enrico, dopo avermi ricordato che c'è ancora il copyright sul suo materiale, si è dimostrato subito interessato e mi ha spronato a continuare. Ne è nato un bello scambio elettronico-epistolare che tutt'ora continua.</p><p>Per facilitarmi il lavoro mi ha gentilmente concesso la lettura dei suoi sorgenti, grazie ai quali lo sviluppo ha subìto una forte accelerata.</p>
         <p>Se sono riuscito a portare a termine questo lavoro lo devo principalmente a lui.<br/>Non smetterò mai di ringraziarlo.</p>
         <p>Se vuoi segnalarmi un bug oppure semplicemente scrivermi, puoi farlo all'indirizzo <a href="mailto:volpini.federico79@gmail.com">volpini.federico79@gmail.com</a>. Sarò ben felice di risponderti non appena possibile!</p>
-        <div className="close">Close</div>
     </article>
 );
 
@@ -52,22 +49,21 @@ const LinkContent = () => (
         <p>Un breve elenco di link utili:</p>
         <ul>
             <li>
-                <a href="https://www.erix.it/" target="_blank">Il sito di Enrico Colombini</a>
+                <a href="https://www.erix.it/" target="_blank" rel="noreferrer">Il sito di Enrico Colombini</a>
             </li>
             <li>
-                <a href="https://www.erix.it/avventure.html#cast" target="_blank">La pagina di Avventura nel
+                <a href="https://www.erix.it/avventure.html#cast" target="_blank" rel="noreferrer">La pagina di Avventura nel
                     Castello, sempre nel sito di Colombini</a>
             </li>
             <li>
-                <a href="https://www.oldgamesitalia.net/if-italia-avventure-testuali" target="_blank">La
+                <a href="https://www.oldgamesitalia.net/if-italia-avventure-testuali" target="_blank" rel="noreferrer">La
                     sezione dedicata alle avventure testuali di OldGamesItalia</a>
             </li>
             <li>
-                <a href="https://www.avalast.it/giochi-online/avventure-testuali/" target="_blank">Sezione
+                <a href="https://www.avalast.it/giochi-online/avventure-testuali/" target="_blank" rel="noreferrer">Sezione
                     avventure testuali del portale Avalast.it</a>
             </li>
         </ul>
-        <div className="close">Close</div>
     </article>
 );
 
@@ -83,6 +79,12 @@ const Homepage = () => {
         setProjectModal(project);
         setAuthorModal(author);
         setLinkModal(link);
+    }
+
+    const handleCloseModal = () => {
+        setProjectModal(false);
+        setAuthorModal(false);
+        setLinkModal(false);
     }
 
     return (
@@ -109,16 +111,19 @@ const Homepage = () => {
                 <div id="main">
                     <NavModal opened={projectModal}>
                         <ProjectContent/>
+                        <button onClick={() => handleCloseModal()} className="close">Close</button>
                     </NavModal>
                     <NavModal opened={authorModal}>
                         <AuthorContent/>
+                        <button onClick={() => handleCloseModal()} className="close">Close</button>
                     </NavModal>
                     <NavModal opened={linkModal}>
                         <LinkContent/>
+                        <button onClick={() => handleCloseModal()} className="close">Close</button>
                     </NavModal>
                 </div>
                 <footer id="footer">
-                    <p className="copyright">© 2023. Design: <a href="https://html5up.net" target="_blank">HTML5 UP</a>.</p>
+                    <p className="copyright">© {new Date().getFullYear()}. Design: <a href="https://html5up.net" target="_blank" rel="noreferrer">HTML5 UP</a>.</p>
                 </footer>
             </div>
             <div id="bg"></div>

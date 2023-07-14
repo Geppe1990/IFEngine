@@ -1,4 +1,4 @@
-#main article {
+#main .ReactModal__Overlay {
     transform: translateY(0.25rem);
     transition: opacity 0.325s ease-in-out, transform 0.325s ease-in-out;
     padding: 4.5rem 2.5rem 1.5rem 2.5rem ;
@@ -10,12 +10,12 @@
     opacity: 0;
 }
 
-#main article.active {
+#main .ReactModal__Overlay {
     transform: translateY(0);
     opacity: 1;
 }
 
-#main article .close {
+.close {
     display: block;
     position: absolute;
     top: 0;
@@ -26,9 +26,10 @@
     text-indent: 4rem;
     overflow: hidden;
     white-space: nowrap;
+    box-shadow: none;
 }
 
-#main article .close:before {
+.close:before {
     transition: background-color 0.2s ease-in-out;
     content: '';
     display: block;
@@ -44,11 +45,15 @@
     background-repeat: no-repeat;
 }
 
-#main article .close:hover:before {
+.close:hover {
+    background: none;
+}
+
+.close:hover:before {
     background-color: rgba(255, 255, 255, 0.075);
 }
 
-#main article .close:active:before {
+.close:active:before {
     background-color: rgba(255, 255, 255, 0.175);
 }
 
@@ -57,7 +62,7 @@
         padding: 3.5rem 2rem 0.5rem 2rem ;
     }
 
-    #main article .close:before {
+    .close:before {
         top: 0.875rem;
         left: 0.875rem;
         width: 2.25rem;
