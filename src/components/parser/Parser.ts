@@ -1,6 +1,8 @@
 interface Ioverride {
-    commands?: string,
-    verbs?: {}
+    [key: string]: {
+        commands?: Icommands,
+        verbs?: Iverbs
+    }
 }
 
 interface Iverbs {
@@ -14,9 +16,10 @@ interface Iverbs {
 
 interface Icommands {
     [key: string]: {
-        movimento: boolean, pattern: string, defaultMessage: string, direzione: string
+        movimento?: boolean, pattern?: string, defaultMessage?: string, direzione?: string, singolo?: boolean
     }
 }
+
 class Parser{
     verbs: Iverbs
     commands: Icommands
@@ -43,9 +46,10 @@ class Parser{
             c;
     }
 
-    _parse(input: string, sorgente: Icommands | Iverbs, override: Icommands | {}){
+    _parse(input: string, sorgente: Icommands | Iverbs, override: Ioverride){
         for (let chiave in sorgente){
-            let obj = { ...sorgente[chiave]};
+            // TODO: FIXARE QUESTO any
+            let obj: any = { ...sorgente[chiave]};
 
             let overrideObj = this._getSource(chiave, override);
             if(overrideObj){
@@ -57,9 +61,7 @@ class Parser{
             }
 
 
-            let pattern = obj.pattern === undefined ?
-                "("+chiave+")" :
-                obj.pattern;
+            let pattern = obj.pattern === undefined ? "("+chiave+")" : obj.pattern;
 
             if(
                 sorgente != this.commands &&
@@ -83,8 +85,8 @@ class Parser{
                 }
             }
 
-            pattern = new RegExp("^"+pattern+"$", 'i');
-            let matches = input.match(pattern);
+            const validPattern = new RegExp("^"+pattern+"$", 'i');
+            let matches = input.match(validPattern);
 
             if(matches != null){
 
@@ -94,7 +96,7 @@ class Parser{
                 // Se è un movimento e lo posso usare singolarmente
                 // mappo la direzione con l'attributo "direzione"
 
-                if(obj.direzione !== undefined)
+                if(obj?.direzione !== undefined)
                     subjects.push(obj.direzione);
                 else {
                     // mappo i "soggetti" della mia azione
@@ -138,7 +140,7 @@ class Parser{
         return input;
     }
 
-    _getSource(key: string, source: Icommands | Iverbs, separator?: string){
+    _getSource(key: string, source: Ioverride, separator?: string){
         if(separator === undefined)
             separator = "|";
 
