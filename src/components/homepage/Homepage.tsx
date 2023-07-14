@@ -1,10 +1,11 @@
-// TODO: DARE STILI ALLA MODAL: GUARDARE RIGA 70
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFortAwesome} from "@fortawesome/free-brands-svg-icons";
 import Modal from "react-modal";
-import React, {ReactNode, useState} from "react";
+import React, { useState } from "react";
+import NavModal from "./NavModal";
 
-const ProjectContent = <article id="progetto" className="active">
+const ProjectContent = () => (
+    <article id="progetto" className="active">
         <h2 className="major">Il Progetto</h2>
         <p><strong>Avventura nel Castello in JavaScript</strong> è un porting in Javascript (con specifiche
             EcmaScript 6) del gioco "Avventura nel Castello" v4.1 per MS-DOS di Enrico Colombini e Chiara
@@ -15,7 +16,7 @@ const ProjectContent = <article id="progetto" className="active">
             differenze rispetto al gioco originale sono state comunque discusse e approvate dagli autori
             stessi.</p>
         <p>La licenza di distribuzione del porting è <a
-            href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.it" target="_blank">CC BY-NC-ND
+            href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.it" target="_blank" rel="noopener">CC BY-NC-ND
             4.0</a> (Attribution-NonCommercial-NoDerivatives 4.0 International)</p>
         <hr />
         <h3>Note</h3>
@@ -31,8 +32,10 @@ const ProjectContent = <article id="progetto" className="active">
 
         <div className="close">Close</div>
     </article>
+);
 
-const AuthorContent = <article id="autore">
+const AuthorContent = () => (
+    <article id="autore">
         <h2 className="major">L'autore</h2>
         <p>Mi chiamo Federico Volpini, sono del '79 e ho la passione dell'informatica da quando, all'età di 5 anni, mio padre mi regalò il mio primo computer: un VIC-20!</p>
         <p>Da grande mi sono appassionato allo sviluppo web, in particolare con PHP e Javascript.<br/>Non sono un guru, però grazie a queste nuove conoscenze acquisite mi sono cimentato prima nello sviluppo di un engine per poter scrivere avventure testuali in un linguaggio direttamente interpretato dal browser e, successivamente, ad adattarlo alla prima avventura testuale a cui ho giocato (e che mi appassionò tantissimo): "Avventura nel Castello".</p>
@@ -41,8 +44,10 @@ const AuthorContent = <article id="autore">
         <p>Se vuoi segnalarmi un bug oppure semplicemente scrivermi, puoi farlo all'indirizzo <a href="mailto:volpini.federico79@gmail.com">volpini.federico79@gmail.com</a>. Sarò ben felice di risponderti non appena possibile!</p>
         <div className="close">Close</div>
     </article>
+);
 
-const LinkContent = <article id="link" className="active">
+const LinkContent = () => (
+    <article id="link" className="active">
         <h2 className="major">Link Utili</h2>
         <p>Un breve elenco di link utili:</p>
         <ul>
@@ -64,8 +69,7 @@ const LinkContent = <article id="link" className="active">
         </ul>
         <div className="close">Close</div>
     </article>
-
-const NavModal = ({ opened, content } : { opened: boolean, content: ReactNode })=> <Modal isOpen={opened}>{content}</Modal>
+);
 
 Modal.setAppElement('#root');
 
@@ -76,9 +80,9 @@ const Homepage = () => {
     const [linkModal, setLinkModal] = useState(false);
 
     const handleModal = (project: boolean, author: boolean, link: boolean) => {
-        setProjectModal(false);
-        setAuthorModal(false);
-        setLinkModal(true);
+        setProjectModal(project);
+        setAuthorModal(author);
+        setLinkModal(link);
     }
 
     return (
@@ -103,9 +107,15 @@ const Homepage = () => {
                     </nav>
                 </header>
                 <div id="main">
-                    <NavModal opened={projectModal} content={ProjectContent} />
-                    <NavModal opened={authorModal} content={AuthorContent} />
-                    <NavModal opened={linkModal} content={LinkContent} />
+                    <NavModal opened={projectModal}>
+                        <ProjectContent/>
+                    </NavModal>
+                    <NavModal opened={authorModal}>
+                        <AuthorContent/>
+                    </NavModal>
+                    <NavModal opened={linkModal}>
+                        <LinkContent/>
+                    </NavModal>
                 </div>
                 <footer id="footer">
                     <p className="copyright">© 2023. Design: <a href="https://html5up.net" target="_blank">HTML5 UP</a>.</p>
