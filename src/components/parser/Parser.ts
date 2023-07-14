@@ -52,8 +52,8 @@ class Parser{
             let obj: any = { ...sorgente[chiave]};
 
             let overrideObj = this._getSource(chiave, override);
-            if(overrideObj){
-                if(typeof overrideObj == 'function'){
+            if (overrideObj){
+                if (typeof overrideObj == 'function'){
                     obj.callback = overrideObj;
                 }
                 else
