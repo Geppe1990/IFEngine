@@ -5,7 +5,6 @@ import "./NavModal.css";
 const overlayStyle = {
     zIndex: 4,
 }
-
 const contentStyle = {
     zIndex: 4,
     padding: "4.5rem 2.5rem 1.5rem 2.5rem",
@@ -24,9 +23,7 @@ const NavModal = ({ children, opened } : { children: React.ReactNode, opened: bo
             content: contentStyle
         }}
     >
-        <>
-            {children}
-        </>
+        {children}
     </Modal>
 );
 
