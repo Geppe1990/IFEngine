@@ -23,7 +23,7 @@ class Sound{
     }
 
     playMusic(music: boolean, repeat: boolean){
-        if(this.playing == music)
+        if(this.playing === music)
             return;
         this.stopMusic();
         this.player = new Tone.Player("res/audio/"+music+".mp3").toDestination();
@@ -52,3 +52,5 @@ class Sound{
         }).toDestination();
     }
 }
+
+export default Sound;

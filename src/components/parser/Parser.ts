@@ -64,20 +64,20 @@ class Parser{
             let pattern = obj.pattern === undefined ? "("+chiave+")" : obj.pattern;
 
             if(
-                sorgente != this.commands &&
-                override != this.override.commands &&
-                input.indexOf(" ") == -1 &&
-                (obj.singolo === undefined || obj.singolo == false)
+                sorgente !== this.commands &&
+                override !== this.override.commands &&
+                input.indexOf(" ") === -1 &&
+                (obj.singolo === undefined || !obj.singolo)
             ){
                 let matches = input.match(new RegExp("^"+pattern+"$", 'i'));
                 if( matches != null)
                     return input;
             }
 
-            if(sorgente == this.verbs){
+            if(sorgente === this.verbs){
                 if(
-                    (obj.movimento === undefined || obj.movimento == false) &&
-                    (obj.complex === undefined || obj.complex == false)
+                    (obj.movimento === undefined || obj.movimento === false) &&
+                    (obj.complex === undefined || obj.complex === false)
                 ){
                     pattern += obj.singolo ?
                         "(?:\\s+(.+))?" :
@@ -100,7 +100,7 @@ class Parser{
                     subjects.push(obj.direzione);
                 else {
                     // mappo i "soggetti" della mia azione
-                    while(i < matches.length && matches[i] != undefined){
+                    while(i < matches.length && matches[i] !== undefined){
                         subjects.push(matches[i].trim());
                         i++;
                     }
@@ -111,7 +111,7 @@ class Parser{
                 return {
                     verb: chiave,
                     actionObject: obj,
-                    command: sorgente == this.commands, //patternEsatto == true,
+                    command: sorgente === this.commands, //patternEsatto == true,
                     subjects: subjects
                 }
 
@@ -124,7 +124,7 @@ class Parser{
 
     _prepare(input: string){
         input = input.trim();
-        input = input.replace(/[\.,:;!"£\$%&\/\(\)=°\+\*]*/gmi,"");
+        input = input.replace(/[.,:;!"£$%&/()=°+*]*/gmi,"");
         input = input.replace(/à/gmi,"a");
         input = input.replace(/(è|é)/gmi,"e");
         input = input.replace(/ì/gmi,"i");
@@ -147,7 +147,7 @@ class Parser{
 
         for (let k in source){
             let i = k.split(separator);
-            let p = i.filter((e) => {return key==e;});
+            let p = i.filter((e) => {return key === e;});
             if(p.length > 0)
                 return source[k];
         }

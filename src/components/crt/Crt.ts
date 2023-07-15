@@ -1,5 +1,3 @@
-import {EventHandler} from "react";
-
 interface IprintOptions {
     printDelay: number
     cr: 		boolean
@@ -139,9 +137,12 @@ class CRT{
 
             this.currentCol++;
 
+            // eslint-disable-next-line eqeqeq
             if(this.currentCol > this.width || text[i] == "\n"){
 
+                // eslint-disable-next-line eqeqeq
                 if(text[i] != "\n"){
+                    // eslint-disable-next-line eqeqeq
                     if(text[i+1] !== undefined && (text[i+1] != "\n" && text[i+1] != " "))
                         if(this.txt) {
                             this.txt.innerHTML +="\n";
@@ -152,18 +153,12 @@ class CRT{
             } else {
                 window.scrollTo(0,document.body.scrollHeight);
             }
+            // eslint-disable-next-line eqeqeq
             if(text[i] != " " && text[i] != "\n")
                 await this.sleep(options.printDelay);
         }
 
-        if(this.txt) {
-            let cn = this.txt.cloneNode(true) as HTMLElement;
-            cn.removeAttribute('id');
-
-            if(this.fixed) {
-                this.fixed.appendChild(cn);
-            }
-        }
+        this._handleNode()
 
         if(options.nlAfter > 0 && this.fixed)
             this.fixed.innerHTML += "\n".repeat(options.nlAfter);
@@ -211,15 +206,7 @@ class CRT{
         if(options.nlBefore > 0 && this.fixed)
             this.fixed.innerHTML += "\n".repeat(options.nlBefore);
 
-        if(this.txt) {
-            let cn = this.txt.cloneNode(true) as HTMLElement;
-            cn.removeAttribute('id');
-
-            if(this.fixed) {
-                this.fixed.appendChild(cn);
-            }
-        }
-
+        this._handleNode()
 
         if(options.nlAfter > 0 && this.fixed)
             this.fixed.innerHTML += "\n".repeat(options.nlAfter);
@@ -251,13 +238,16 @@ class CRT{
     }
 
     async input(cr: boolean, noInput: boolean){
+        // eslint-disable-next-line eqeqeq
         if(cr==undefined)
             cr = this.defaultCR;
 
+        // eslint-disable-next-line eqeqeq
         if(noInput==undefined)
             noInput = false;
 
-        if(this._isMobile() && noInput == false && this.mobileInput){
+        // eslint-disable-next-line eqeqeq
+        if(this._isMobile() && !noInput && this.mobileInput){
             this.mobileInput.style.display = "block";
         } else {
             if(this.cursor) {
@@ -276,14 +266,16 @@ class CRT{
             if(noInput)
                 break;
             if(lastKeyEvent && lastKeyEvent instanceof KeyboardEvent) {
-                keyCode = lastKeyEvent.key || lastKeyEvent.keyCode;
+                keyCode = lastKeyEvent.key;
             }
 
             if(keyCode){
-                if(this.acceptedKeys(Number(keyCode)) || keyCode == 13 || keyCode == 229){
-                    switch(keyCode){
+                // eslint-disable-next-line eqeqeq
+                if(this.acceptedKeys(Number(keyCode)) || Number(keyCode) == 13 || Number(keyCode) == 229){
+                    switch(Number(keyCode)){
                         case 13:
                         case 229:
+                            // eslint-disable-next-line eqeqeq
                             if(this.mobileInput && this.mobileInput.value != ""){
                                 inputTxt = this.mobileInput.value;
                             }
@@ -301,6 +293,7 @@ class CRT{
 
                                 inputTxt = inputTxt.substring(0, inputTxt.length-1);
                                 if(this.txt) {
+                                    // eslint-disable-next-line eqeqeq
                                     this.txt.innerHTML = this.txt.innerHTML.substring(0, this.txt.innerHTML.length-(this.currentCol == this.width ? 2 : 1));
                                 }
                             }
@@ -328,7 +321,8 @@ class CRT{
             //console.log(inputTxt,this.currentCol);
             window.scrollTo(0,document.body.scrollHeight);
 
-        } while (keyCode == undefined || keyCode != 13 || (inputTxt.trim().length == 0 && cr));
+            // eslint-disable-next-line eqeqeq
+        } while (keyCode == undefined || Number(keyCode) != 13 || (inputTxt.trim().length == 0 && cr));
 
 
         if(this._isMobile()){
@@ -369,7 +363,6 @@ class CRT{
     }
 
     keyPressed(): Promise<KeyboardEvent | PointerEvent>{
-        let that = this;
         return new Promise((resolve) => {
             document.addEventListener('keydown', onKeyHandler, true);
             document.addEventListener('pointerup', onPHandler, true);
@@ -399,6 +392,7 @@ class CRT{
             for(let i in chunks){
                 line.push(chunks[i]);
                 let tmpLine = line.join(" ");
+                // eslint-disable-next-line eqeqeq
                 let widthToCheck = lines.length == 0 ? this.width-this.currentCol+1 : this.width;
                 if(tmpLine.length > widthToCheck){
                     line.pop();
@@ -417,6 +411,17 @@ class CRT{
 
     _isMobile() {
         return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+    _handleNode() {
+        if(this.txt) {
+            let cn = this.txt.cloneNode(true) as HTMLElement;
+            cn.removeAttribute('id');
+
+            if(this.fixed) {
+                this.fixed.appendChild(cn);
+            }
+        }
     }
 }
 
