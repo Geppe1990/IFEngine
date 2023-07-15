@@ -1,4 +1,32 @@
+import {EventHandler} from "react";
+
+interface IprintOptions {
+    printDelay: number
+    cr: 		boolean
+    reversed: 	boolean
+    blinking: 	boolean
+    nlBefore: 	number
+    nlAfter: 	number
+    waitBefore?: number
+    waitAfter?: number
+}
+
 class CRT{
+    crt: HTMLElement | null;
+    screen: HTMLElement | null;
+    txt: HTMLElement | null;
+    fixed: HTMLElement | null;
+    cursor: HTMLElement | null;
+    mobileInput: HTMLInputElement | null;
+    defaultCR: boolean
+    width: number
+    maxWidth: number
+    spad: number
+    currentCol: number
+    capsLock: boolean
+    acceptedKeyCodes: number[]
+    waitText: string
+    printOptions: IprintOptions
     constructor(){
 
         this.crt 				= document.getElementById("crt");
@@ -6,7 +34,7 @@ class CRT{
         this.txt 				= document.getElementById("txt");
         this.fixed 				= document.getElementById("fixed");
         this.cursor 			= document.getElementById("cursor");
-        this.mobileInput 		= document.getElementById("mobileInput");
+        this.mobileInput 		= document.getElementById("mobileInput") as HTMLInputElement;
         this.defaultCR 			= true;
 
         this.width 				= 80;
@@ -32,38 +60,54 @@ class CRT{
 
     refreshScreen(){
         let char = document.getElementById("char");
-        let charWidth = char.getBoundingClientRect().width;
-        this.crt.margin = charWidth+"px";
-        this.cursor.style.borderWidth = charWidth+"px";
-        let maxScreenWidth = charWidth * this.maxWidth;
-        this.screen.style.maxWidth = maxScreenWidth+"px";
-        let screenWidth = this.screen.offsetWidth;
-        this.width = Math.floor(screenWidth/charWidth);
-        window.scrollTo(0,document.body.scrollHeight);
+        let charWidth = char?.getBoundingClientRect().width;
+
+        if(this.crt) {
+            this.crt.style.margin = charWidth+"px";
+        }
+
+        if(this.cursor) {
+            this.cursor.style.borderWidth = charWidth+"px";
+        }
+        if(charWidth && this.screen) {
+            let maxScreenWidth = charWidth * this.maxWidth;
+            this.screen.style.maxWidth = maxScreenWidth+"px";
+            let screenWidth = this.screen.offsetWidth;
+            this.width = Math.floor(screenWidth/charWidth);
+        }
+
+        window.scrollTo(0, document.body.scrollHeight);
     }
 
-    async sleep(ms){
+    async sleep(ms: number){
         return new Promise(
             resolve => setTimeout(resolve, ms)
         );
     }
 
     clear(){
-        this.txt.innerHTML = "";
-        this.fixed.innerHTML = "";
+        if(this.txt) {
+            this.txt.innerHTML = "";
+        }
+
+        if(this.fixed) {
+            this.fixed.innerHTML = "";
+        }
         this.currentCol = 1;
     }
 
     async wait(){
-        this.fixed.innerHTML += this.waitText;
-        await this.input(false, true);
-        let lines = this.fixed.innerHTML.split("\n")
-        lines.pop();
-        lines.pop();
-        this.fixed.innerHTML = lines.join("\n")+"\n\n";
+        if(this.fixed) {
+            this.fixed.innerHTML += this.waitText;
+            await this.input(false, true);
+            let lines = this.fixed.innerHTML.split("\n")
+            lines.pop();
+            lines.pop();
+            this.fixed.innerHTML = lines.join("\n")+"\n\n";
+        }
     }
 
-    async printTyping(text, options){
+    async printTyping(text: string, options: IprintOptions){
         if (options === undefined)
             options = this.printOptions
         else
@@ -71,33 +115,37 @@ class CRT{
 
         if(options.cr) text += "\n";
 
-        if(options.nlBefore > 0)
+        if(options.nlBefore > 0 && this.txt)
             this.txt.innerHTML += "\n".repeat(options.nlBefore);
 
         text = this._truncate(text);
 
-        if(options.reversed){
+        if(options.reversed && this.txt){
             this.txt.classList.add('reversed');
         }
 
-        if(options.blinking){
+        if(options.blinking && this.txt){
             this.txt.classList.add('blinkingText');
         }
 
         if(options.waitBefore){
-            await this.sleep(waitBefore);
+            await this.sleep(options.waitBefore);
         }
 
         for(let i=0; i<text.length;i++){
-            this.txt.innerHTML += text[i];
+            if(this.txt){
+                this.txt.innerHTML += text[i]
+            }
+
             this.currentCol++;
-            //this.fixed.append(text[i])
+
             if(this.currentCol > this.width || text[i] == "\n"){
 
                 if(text[i] != "\n"){
                     if(text[i+1] !== undefined && (text[i+1] != "\n" && text[i+1] != " "))
-                        this.txt.innerHTML +="\n";
-                    //this.fixed.append("\n");
+                        if(this.txt) {
+                            this.txt.innerHTML +="\n";
+                        }
                 }
                 this.currentCol = 1;
 
@@ -108,40 +156,47 @@ class CRT{
                 await this.sleep(options.printDelay);
         }
 
-        let cn = this.txt.cloneNode(true);
-        cn.removeAttribute('id');
-        this.fixed.appendChild(cn);
+        if(this.txt) {
+            let cn = this.txt.cloneNode(true) as HTMLElement;
+            cn.removeAttribute('id');
 
-        if(options.nlAfter > 0)
+            if(this.fixed) {
+                this.fixed.appendChild(cn);
+            }
+        }
+
+        if(options.nlAfter > 0 && this.fixed)
             this.fixed.innerHTML += "\n".repeat(options.nlAfter);
 
-        this.txt.innerHTML = "";
+        if(this.txt) {
+            this.txt.innerHTML = "";
+        }
 
         if(options.waitAfter){
             await this.sleep(options.waitAfter);
         }
 
-        if(options.reversed){
+        if(options.reversed && this.txt){
             this.txt.classList.remove('reversed');
         }
 
-        if(options.blinking){
+        if(options.blinking && this.txt){
             this.txt.classList.remove('blinkingText');
         }
 
     }
 
-    async print(text, options){
+    async print(text: string, options: IprintOptions){
         if (options === undefined)
             options = this.printOptions
         else
             options = { ...this.printOptions, ...options };
 
-        if(options.reversed){
+        if(options.reversed && this.txt){
             this.txt.classList.add('reversed');
         }
 
-        if(options.blinking){
+        if(options.blinking && this.txt){
             this.txt.classList.add('blinkingText');
         }
 
@@ -149,98 +204,125 @@ class CRT{
             await this.sleep(options.waitBefore);
         }
 
-        this.txt.innerHTML = text;
+        if(this.txt) {
+            this.txt.innerHTML = text;
+        }
 
-        if(options.nlBefore > 0)
+        if(options.nlBefore > 0 && this.fixed)
             this.fixed.innerHTML += "\n".repeat(options.nlBefore);
 
-        let cn = this.txt.cloneNode(true);
-        cn.removeAttribute('id');
-        this.fixed.appendChild(cn);
+        if(this.txt) {
+            let cn = this.txt.cloneNode(true) as HTMLElement;
+            cn.removeAttribute('id');
 
-        if(options.nlAfter > 0)
+            if(this.fixed) {
+                this.fixed.appendChild(cn);
+            }
+        }
+
+
+        if(options.nlAfter > 0 && this.fixed)
             this.fixed.innerHTML += "\n".repeat(options.nlAfter);
 
-        this.txt.innerHTML = "";
+        if(this.txt) {
+            this.txt.innerHTML = "";
+        }
 
-        if(options.reversed){
+        if(options.reversed && this.txt){
             this.txt.classList.remove('reversed');
         }
-        if(options.blinking){
+
+        if(options.blinking && this.txt){
             this.txt.classList.remove('blinkingText');
         }
 
         let lastLine = text.split("\n").pop();
-        this.currentCol += lastLine.length;
-        //if(this.currentCol >= this.width)
-        //	this.currentCol = this.currentCol % this.width
+
+        if(lastLine) {
+            this.currentCol += lastLine.length;
+        }
+
         await window.scrollTo(0,document.body.scrollHeight);
         await this.sleep(options.waitAfter ? options.waitAfter : 25);
     }
 
-    async println(text, options){
+    async println(text: string, options: IprintOptions){
         await this.print(text+"\n",options);
     }
 
-    async input(cr, noInput){
+    async input(cr: boolean, noInput: boolean){
         if(cr==undefined)
             cr = this.defaultCR;
 
         if(noInput==undefined)
             noInput = false;
 
-        if(this._isMobile() && noInput == false){
+        if(this._isMobile() && noInput == false && this.mobileInput){
             this.mobileInput.style.display = "block";
         } else {
-            this.cursor.classList.add("blinking");
+            if(this.cursor) {
+                this.cursor.classList.add("blinking");
+            }
         }
 
         window.scrollTo(0,document.body.scrollHeight);
 
-
-
         let inputTxt = "";
-        let lastKeyEvent = null;
+        let lastKeyEvent: KeyboardEvent | PointerEvent;
         let keyCode = null;
+
         do{
             lastKeyEvent = await this.keyPressed();
             if(noInput)
                 break;
-            keyCode = lastKeyEvent.which || lastKeyEvent.keyCode;
-            if(this.acceptedKeys(keyCode) || keyCode == 13 || keyCode == 229){
-                switch(keyCode){
-                    case 13:
-                    case 229:
-                        if(this.mobileInput.value != ""){
-                            inputTxt = this.mobileInput.value;
-                        }
-                        if(inputTxt.trim().length > 0){
-                            inputTxt = inputTxt.toLowerCase();
+            if(lastKeyEvent && lastKeyEvent instanceof KeyboardEvent) {
+                keyCode = lastKeyEvent.key || lastKeyEvent.keyCode;
+            }
 
-                        }
-                        break;
+            if(keyCode){
+                if(this.acceptedKeys(Number(keyCode)) || keyCode == 13 || keyCode == 229){
+                    switch(keyCode){
+                        case 13:
+                        case 229:
+                            if(this.mobileInput && this.mobileInput.value != ""){
+                                inputTxt = this.mobileInput.value;
+                            }
+                            if(inputTxt.trim().length > 0){
+                                inputTxt = inputTxt.toLowerCase();
 
-                    case 8:
-                        if(inputTxt.length > 0){
-                            this.currentCol --;
-                            if(this.currentCol < 1)
-                                this.currentCol = this.width;
+                            }
+                            break;
 
-                            inputTxt = inputTxt.substring(0, inputTxt.length-1);
-                            this.txt.innerHTML = this.txt.innerHTML.substring(0, this.txt.innerHTML.length-(this.currentCol == this.width ? 2 : 1));
-                        }
-                        break;
+                        case 8:
+                            if(inputTxt.length > 0){
+                                this.currentCol --;
+                                if(this.currentCol < 1)
+                                    this.currentCol = this.width;
 
-                    default:
-                        inputTxt += lastKeyEvent.key;
-                        this.currentCol++;
+                                inputTxt = inputTxt.substring(0, inputTxt.length-1);
+                                if(this.txt) {
+                                    this.txt.innerHTML = this.txt.innerHTML.substring(0, this.txt.innerHTML.length-(this.currentCol == this.width ? 2 : 1));
+                                }
+                            }
+                            break;
 
-                        this.txt.innerHTML += this.capsLock ? lastKeyEvent.key.toUpperCase() : lastKeyEvent.key;
+                        default:
+                            if(lastKeyEvent instanceof KeyboardEvent){
+                                inputTxt += lastKeyEvent.key;
+                            }
+                            this.currentCol++;
 
-                        if(this.currentCol > this.width){
-                            this.txt.innerHTML += "\n";
-                            this.currentCol = 1;
-                        }
+                            if(this.txt && lastKeyEvent instanceof KeyboardEvent) {
+                                this.txt.innerHTML += this.capsLock ? lastKeyEvent.key.toUpperCase() : lastKeyEvent.key;
+                            }
+
+                            if(this.currentCol > this.width){
+                                if(this.txt) {
+                                    this.txt.innerHTML += "\n";
+                                }
+                                this.currentCol = 1;
+                            }
+                    }
                 }
             }
             //console.log(inputTxt,this.currentCol);
@@ -250,46 +332,55 @@ class CRT{
 
 
         if(this._isMobile()){
-            this.txt.innerHTML = inputTxt.trim();
-            this.mobileInput.value = "";
-            this.mobileInput.style.display = "none";
+            if(this.txt) {
+                this.txt.innerHTML = inputTxt.trim();
+            }
+
+            if(this.mobileInput) {
+                this.mobileInput.value = "";
+                this.mobileInput.style.display = "none";
+            }
         }
 
 
         //this.fixed.innerHTML += this.txt.innerHTML +"\n" + (cr ? "\n" : "");
-        let span = this.txt.cloneNode(true);
-        span.removeAttribute('id');
-        this.fixed.append(span);
+        if(this.txt && this.fixed) {
+            let span = this.txt.cloneNode(true) as HTMLElement;
+            span.removeAttribute('id');
 
-        this.fixed.innerHTML += "\n" + (cr ? "\n" : "");
-        this.currentCol = 1;
-        this.txt.innerHTML = "";
+            this.fixed.append(span);
+            this.fixed.innerHTML += "\n" + (cr ? "\n" : "");
+            this.currentCol = 1;
+            this.txt.innerHTML = "";
 
-        this.cursor.classList.remove("blinking");
+            if(this.cursor) {
+                this.cursor.classList.remove("blinking");
+            }
+        }
 
         return inputTxt.trim();
     }
 
-    acceptedKeys(code){
+    acceptedKeys(code: number){
         //console.log(code);
         if (code >= 65 && code <= 90) return true;
         if (code >= 48 && code <= 57) return true;
         return this.acceptedKeyCodes.indexOf(code) >= 0;
     }
 
-    keyPressed(){
+    keyPressed(): Promise<KeyboardEvent | PointerEvent>{
         let that = this;
         return new Promise((resolve) => {
             document.addEventListener('keydown', onKeyHandler, true);
             document.addEventListener('pointerup', onPHandler, true);
 
-            function onKeyHandler(e) {
+            function onKeyHandler(e: KeyboardEvent) {
                 e.preventDefault();
                 document.removeEventListener('keydown', onKeyHandler, true);
                 resolve(e);
             }
 
-            function onPHandler(e) {
+            function onPHandler(e: PointerEvent) {
                 e.preventDefault();
                 document.removeEventListener('pointerup', onPHandler, true);
                 resolve(e);
@@ -297,14 +388,14 @@ class CRT{
         });
     }
 
-    _truncate(textLines){
-        textLines = textLines.split("\n");
+    _truncate(textLines: string){
+        let updatedTextLines = textLines.split("\n");
         let lines = [];
 
-        for(let i in textLines){
-            let text = textLines[i];
+        for(let i in updatedTextLines){
+            let text = updatedTextLines[i];
             let chunks = text.split(" ");
-            let line = [];
+            let line: string[] = [];
             for(let i in chunks){
                 line.push(chunks[i]);
                 let tmpLine = line.join(" ");
@@ -327,5 +418,6 @@ class CRT{
     _isMobile() {
         return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
-
 }
+
+export default CRT;
